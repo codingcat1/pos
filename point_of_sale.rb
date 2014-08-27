@@ -1,7 +1,8 @@
-require 'activerecord'
-require '.lib/cashier'
-require '.lib/customer'
-require '.lib/product'
+require 'active_record'
+require './lib/cashier'
+require './lib/customer'
+require './lib/product'
+require 'yaml'
 
 database_configurations = YAML::load(File.open('./db/config.yml'))
 development_configuration = database_configurations['development']
@@ -55,6 +56,21 @@ def product_menu
   else
     puts "Sorry, that wasn't a valid option."
   end
+end
+
+def add_products
+  puts "*** ADD A PRODUCT ***\n"
+  puts "What is the name of the PRODUCT you would like to add?\n"
+  product_name = gets.chomp
+  new_product = Product.new({:name => product_name})
+  new_product.save
+  puts "What is the cost of '#{product_name}'?"
+  puts "Ex: 3.99"
+  product_price = gets.chomp
+  new_price = Product.new({:price => product_price})
+  new_price.save
+  puts "#{product_name}-$#{product_price} has been added to your list of Products.\n\n"
+  product_menu
 end
 
 welcome
